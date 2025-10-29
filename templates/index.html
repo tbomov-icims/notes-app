@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Notes App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .note {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .note-text {
+            flex: 1;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .add-btn {
+            background: #4CAF50;
+            color: white;
+            margin: 20px 0;
+        }
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            padding: 5px 15px;
+            margin-left: 10px;
+        }
+        .done-btn {
+            background: #2196F3;
+            color: white;
+            margin-left: 10px;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+        #add-form {
+            display: none;
+            margin: 20px 0;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+        }
+        .empty {
+            color: #999;
+            font-style: italic;
+        }
+    </style>
+    <script>
+        function showAddForm() {
+            document.getElementById('add-form').style.display = 'block';
+            document.getElementById('show-add-btn').style.display = 'none';
+            document.getElementById('note-input').focus();
+        }
+        function hideAddForm() {
+            document.getElementById('add-form').style.display = 'none';
+            document.getElementById('show-add-btn').style.display = 'inline-block';
+        }
+    </script>
+</head>
+<body>
+    <h1>My Notes</h1>
+    
+    <button id="show-add-btn" class="add-btn" onclick="showAddForm()">+ Add Note</button>
+    
+    <div id="add-form">
+        <form method="POST" action="/add">
+            <textarea name="content" id="note-input" rows="4" placeholder="Enter your note..." required></textarea>
+            <br><br>
+            <button type="submit" class="done-btn">Done</button>
+            <button type="button" class="delete-btn" onclick="hideAddForm()">Cancel</button>
+        </form>
+    </div>
+
+    <div id="notes-list">
+        {% if notes %}
+            {% for note in notes %}
+            <div class="note">
+                <div class="note-text">{{ note }}</div>
+                <a href="/delete/{{ loop.index0 }}">
+                    <button class="delete-btn">Delete</button>
+                </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty">No notes yet. Click "Add Note" to create one!</p>
+        {% endif %}
+    </div>
+</body>
+</html>
